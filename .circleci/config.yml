@@ -427,21 +427,21 @@ jobs:
       - install_awscli
       - install_nodejs
       - run:
-          name: Save Old Workflow ID to kvdb.io
-          command: |
-            export OLD_WORKFLOW_ID=$(aws cloudformation \
-                    list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                    --no-paginate --output text)
-            echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
-            curl https://kvdb.io/VavzKW56D9fhHgeCDgUVaW/old_workflow_id -d "${OLD_WORKFLOW_ID}"
-      - run:
           name: Update cloudfront distribution
           command: |
             aws cloudformation deploy \
-                --template-file .circleci/files/cloudfront.yml \
-                --stack-name InitialStack \
-                --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-                --tags project=udapeople
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name InitialStack \
+              --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople  
+      - run:
+            name: save old stack workflow id
+            command: |
+              export Old_Workflow_ID=$(aws cloudformation \
+                      list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                      --no-paginate --output text)
+              echo OldWorkflowID = "${Old_Workflow_ID}"
+              curl --insecure https://kvdb.io/VavzKW56D9fhHgeCDgUVaW/OldWorkflowId -d "${Old_Workflow_ID}"
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
       - revert-migrations:
@@ -461,7 +461,7 @@ jobs:
                 --query "StackSummaries[*].StackName" \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
-            export OldWorkflowID=$(curl --insecure https://kvdb.io/VavzKW56D9fhHgeCDgUVaW/old_workflow_id)
+            export OldWorkflowID=$(curl --insecure https://kvdb.io/VavzKW56D9fhHgeCDgUVaW/OldWorkflowId)
             echo Old Workflow ID: $OldWorkflowID 
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
