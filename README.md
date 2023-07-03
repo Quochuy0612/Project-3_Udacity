@@ -117,7 +117,7 @@ https://codewizardly.com/prometheus-on-aws-ec2-part1/
 
 * [URL01] https://github.com/Quochuy0612/Project-3_Udacity
 * [URL02] http://udapeople-62c7b35.s3-website-us-east-1.amazonaws.com/#/employees
-* [URL03] https://dg7pb7k1lb3az.cloudfront.net/#/employees
+* [URL03] http://dg7pb7k1lb3az.cloudfront.net
 * [URL04] http://ec2-54-90-77-175.compute-1.amazonaws.com:3030/api/status
 * [URL05] http://ec2-54-234-237-183.compute-1.amazonaws.com:9090/targets
 
