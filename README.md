@@ -62,3 +62,63 @@ Before you submit your project, please check your work against the project rubri
 ### License
 
 [License](LICENSE.md)
+
+
+## Steps to complete
+
+## Step 1: Integrate Slack
+https://github.com/CircleCI-Public/slack-orb/wiki/Setup
+
+* Create a Slack App
+* Add permission
+* Install and Receive Token
+* Create a Context on CircleCI
+
+## Step 2: Create RDS database
+* Create RDS Postgres database
+* Get host endpoint
+* Add inbound rules to security groups to test database creation
+
+
+## Step 3: Create infrastructure
+
+* Configure AWS CLI on local machine
+* Run the command to create init infrastructure
+`aws cloudformation deploy \
+            --template-file cloudfront.yml \
+            --stack-name InitialStack\
+            --parameter-overrides WorkflowID=udapeople-pnqpjltbtp`
+
+## Step 4: Setup CircleCI
+Add the following environment variables to your Circle CI project by navigating to {project name} > Settings > Environment Variables as shown here:
+```
+AWS_ACCESS_KEY_ID=(from IAM user with programmatic access)
+AWS_SECRET_ACCESS_KEY= (from IAM user with programmatic access)
+AWS_DEFAULT_REGION=(your default region in aws)
+TYPEORM_CONNECTION=postgres
+TYPEORM_MIGRATIONS_DIR=./src/migrations
+TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
+TYPEORM_MIGRATIONS=./src/migrations/*.ts
+TYPEORM_HOST={your postgres database hostname in RDS}
+TYPEORM_PORT=5432 (or the port from RDS if it’s different)
+TYPEORM_USERNAME={your postgres database username in RDS}
+TYPEORM_PASSWORD={your postgres database password in RDS}
+TYPEORM_DATABASE=postgres {or your postgres database name in RDS}
+```
+## Step 5: Project configuration
+
+* Create kvdb for some variables storing
+* Add SSH key to CircleCI project configuration (configure server step)
+
+## Configuration for Prometheus Monitoring & Alert System
+https://codewizardly.com/prometheus-on-aws-ec2-part1/
+
+## Links & URLs
+
+* [URL01] https://github.com/Quochuy0612/Project-3_Udacity
+* [URL02] http://udapeople-9b4fb0c.s3-website-us-east-1.amazonaws.com
+* [URL02 - cloudfront] http://d1dpsk237ddyly.cloudfront.net/#/employees
+
+## Presentation file
+
+* https://github.com/Quochuy0612/Project-3_Udacity/blob/master/presentation.pdf
