@@ -23,15 +23,6 @@ commands:
             sudo apt install software-properties-common -y
             sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible -y
-            
-  install_nodejs:
-    description: Install Node.js 13.8.0
-    steps:
-      - run:
-          name: Install Node.js 13.8.0
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-            sudo apt install -y nodejs
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -270,11 +261,10 @@ jobs:
    
   run-migrations:
     docker:
-      - image: circleci/python:3.10
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
       - restore_cache:
           keys: [backend-build]
       - run:
@@ -298,11 +288,10 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/python:3.10
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
       - attach_workspace:
           at: ~/
       - run:
@@ -336,12 +325,11 @@ jobs:
                                
   deploy-backend:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
       - install_ansible
-      - install_nodejs
       - add_ssh_keys:
           fingerprints: [0e:34:5d:41:f8:44:a2:1c:f4:44:7a:f8:78:5a:d5:9d]
       - attach_workspace:
@@ -380,11 +368,10 @@ jobs:
 
   smoke-test:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
       - run:
           name: Backend smoke test
           command: |
@@ -418,11 +405,10 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
       - run:
           name: Update cloudfront distribution
           command: |
@@ -446,11 +432,10 @@ jobs:
 
   cleanup:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - install_awscli
-      - install_nodejs
       - run:
           name: Remove old stacks and files
           command: |
