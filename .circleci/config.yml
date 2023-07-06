@@ -323,7 +323,12 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
-      - install_awscli
+      - run:
+          name: Install AWS CLI v2
+          command: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip"
+            unzip awscli.zip
+            ./aws/install
       - run:
           name: Install dependencies
           command: |
