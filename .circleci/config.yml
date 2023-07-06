@@ -347,12 +347,21 @@ jobs:
       - attach_workspace:
           at: ~/
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-deps]
       - run:
           name: Install dependencies
           command: |
             cd backend
             npm install
+      - run:
+          name: Package Backend
+          command: |
+            cd backend
+            npm run build
+            tar -czf artifact.tar.gz dist/* package*
+            cd ..
+            mkdir .circleci/ansible/roles/deploy/files
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
       - run:
           name: Package Backend
           command: |
