@@ -70,11 +70,9 @@ commands:
           when: on_fail
           command: |
             SUCCESS=$(curl --insecure https://kvdb.io/VavzKW56D9fhHgeCDgUVaW/migration_<< parameters.id >>)
-            echo $SUCCESS
-            if [[ "$SUCCESS" == "1" ]]
+            if (( $SUCCESS == 1 ));
             then
-              pwd
-              ls -la
+              cd ~/project/backend
               npm install
               npm run migration:revert
             fi
